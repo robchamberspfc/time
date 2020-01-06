@@ -1,17 +1,51 @@
 import React, { Component } from 'react';
 import './App.css';
+// import './pmd2.css';
 import './pmd3.css';
 import './mhclg.css';
 
 class App extends Component {
+
+constructor(props) {
+  super(props);
+  this.state = {date: '',longitude: '',latitude: '',time: '' };  
+  this.handleTimeChange = this.handleTimeChange.bind(this);
+  this.handleLatitudeChange = this.handleLatitudeChange.bind(this);
+  this.handleLongitudeChange = this.handleLongitudeChange.bind(this);
+  this.handleTimeChange = this.handleTimeChange.bind(this);
+  this.handleSubmit = this.handleSubmit.bind(this);
+  this.success = this.success.bind(this);
+  this.sendNewTime = this.sendNewTime.bind(this);
+}
 
 componentDidMount() {
   this.getLocation()
   this.getDate()
 }
 
+handleDateChange(event) {
+  this.setState({date: event.target.value});
+}
+
+handleLongitudeChange(event) {
+  this.setState({longitude: event.target.value});
+}
+
+handleLatitudeChange(event) {
+  this.setState({latitude: event.target.value});
+}
+
+handleTimeChange(event) {
+  this.setState({time: event.target.value});
+}
+
+handleSubmit(event) {
+  event.preventDefault();
+  this.sendNewTime()
+}
+
 getDate() {
- console.log (new Date())
+ this.setState({date: new Date()});
 }
 
 getLocation() {
@@ -24,15 +58,11 @@ getLocation() {
 
 success(position) {
   let crd = position.coords;
-  console.log('Your current position is:');
-  console.log(`Latitude : ${crd.latitude}`);
-  console.log(`Longitude: ${crd.longitude}`);
-  console.log(`More or less ${crd.accuracy} meters.`);
+  this.setState({latitude: crd.latitude});
+  this.setState({longitude: crd.longitude});
 }
 
-
-
-  fetch () {
+fetchTimes () {
     fetch("http://127.0.0.1:4000/times", {
       mode: 'cors',
   })
@@ -45,16 +75,56 @@ success(position) {
   
   }
 
+sendNewTime () {
+  fetch("http://127.0.0.1:4000/times/add?date=" + this.state.date + "&longitude=" + this.state.longitude + "&latitude=" + this.state.latitude + "&time=" + this.state.time, {
+    mode: 'cors',
+})
+  .then(data => {
+    console.log(data)
+  })
+}
+
 render () {
 
   return (
     <div className="App">
-      <header className="test">
-      </header>
       <main>
-        <div className="Columns">
-          <div className="column">
-            <a className="button maquette-styled theme-mhclg icon-button CartButton" href="/" onClick={this.fetch}>Test</a>
+      <header className="Masthead">
+          <div className="logoMHCLG Logo">
+            <a href="/">
+              <h2>Time tracker</h2>
+            </a>
+          </div>
+            <label className="menu-icon"><span className="navicon"></span></label>
+              <ul className="Menu">
+                <li><a href="#submit" id="submit_tab">Submit</a></li>
+                <li><a href="#time" id="time_tab">Time</a></li>
+                <li><a href="#locations" id="locations_tab">Locations</a></li>
+              </ul>
+      </header>
+        <div className="Columns page-width space-below">
+          <div id="#submit" className="Column">
+          <form onSubmit={this.handleSubmit}>
+              <label>
+                Date:
+                <input type="text" defaultValue={this.state.date} onChange={this.handleDateChange} />
+              </label><br />
+              <label>
+                Latitude:
+                <input type="text" defaultValue={this.state.latitude} onChange={this.handleLatitudeChange} />
+              </label><br />
+              <label>
+                Longitude:
+                <input type="text" defaultValue={this.state.longitude} onChange={this.handleLongitudeChange} />
+              </label><br />
+              <label>
+                Time worked:
+                <input type="text" defaultValue={this.state.time} onChange={this.handleTimeChange} />
+              </label><br />
+            <input type="submit" value="Submit" />
+          </form>
+          </div>
+          <div className="Column">
           </div>
         </div>
       </main>
