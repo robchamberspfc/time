@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
+import './pmd3.css';
+import './mhclg.css';
 
 class App extends Component {
 
@@ -31,7 +33,6 @@ success(position) {
 
 
   fetch () {
-    console.log("here")
     fetch("http://127.0.0.1:4000/times", {
       mode: 'cors',
   })
@@ -49,9 +50,16 @@ render () {
   return (
     <div className="App">
       <header className="test">
-        <button onClick={this.fetch}>Test</button>
-        <div id="demo"></div>
       </header>
+      <main>
+        <div className="Columns">
+          <div className="column">
+            <a className="button maquette-styled theme-mhclg icon-button CartButton" href="/" onClick={this.fetch}>Test</a>
+          </div>
+        </div>
+      </main>
+      <div id="demo"></div>
+      
     </div>
   );
 }
