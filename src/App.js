@@ -8,7 +8,7 @@ class App extends Component {
 
 constructor(props) {
   super(props);
-  this.state = {date: '',longitude: '',latitude: '',time: '' };  
+  this.state = {date: '',longitude: '',latitude: '',time: '7:30' };  
   this.handleTimeChange = this.handleTimeChange.bind(this);
   this.handleLatitudeChange = this.handleLatitudeChange.bind(this);
   this.handleLongitudeChange = this.handleLongitudeChange.bind(this);
